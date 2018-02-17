@@ -31,10 +31,10 @@ export class AppComponent {
   }
 
   addNewFriend() {
-    this.friends.push({name: this.newFriendName} as Friend);
-
-    this.http.post<Friend[]>('/api/friends', {name: this.newFriendName})
-      .subscribe(console.log);
+    this.http.post<Friend>('/api/friends', {name: this.newFriendName})
+      .subscribe(createdFriend => {
+        this.friends.push(createdFriend);
+      });
 
     this.newFriendName = '';
   }
