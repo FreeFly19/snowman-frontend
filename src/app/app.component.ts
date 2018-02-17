@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/filter";
 
 @Component({
   selector: 'app-root',
@@ -9,7 +12,7 @@ import { Component } from '@angular/core';
       <div *ngIf="friends.length === 0">Snowman Nata has no any friends!!!</div>
       
       <ul>
-        <li *ngFor="let f of friends; let i = index" (click)="deleteFriend(i)">{{f}}</li>
+        <li *ngFor="let f of friends; let i = index" (click)="deleteFriend(i)">{{f.name}}</li>
       </ul>
       
       <button (click)="addNewFriend()">Add!!!</button>
@@ -18,7 +21,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Hello, Nata!!!';
-  friends = ['Anna', 'Elza', 'Sven'];
+  friends: any[] = [];
+
+  constructor(private http: HttpClient) {
+    http.get<any[]>('/api/friends')
+      .subscribe(json => this.friends = json);
+  }
 
   addNewFriend() {
     this.friends.push('A new Friend');
