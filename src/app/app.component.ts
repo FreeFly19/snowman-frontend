@@ -15,6 +15,7 @@ import "rxjs/add/operator/filter";
         <li *ngFor="let f of friends; let i = index" (click)="deleteFriend(i)">{{f.name}}</li>
       </ul>
       
+      <input type="text" [(ngModel)]="newFriendName">
       <button (click)="addNewFriend()">Add!!!</button>
     </h1>
   `
@@ -22,6 +23,7 @@ import "rxjs/add/operator/filter";
 export class AppComponent {
   title = 'Hello, Nata!!!';
   friends: Friend[] = [];
+  newFriendName: string = '';
 
   constructor(private http: HttpClient) {
     http.get<Friend[]>('/api/friends')
@@ -29,7 +31,8 @@ export class AppComponent {
   }
 
   addNewFriend() {
-    // this.friends.push('A new Friend');
+    this.friends.push({name: this.newFriendName} as Friend);
+    this.newFriendName = '';
   }
 
   deleteFriend(i) {
