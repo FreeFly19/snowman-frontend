@@ -21,18 +21,23 @@ import "rxjs/add/operator/filter";
 })
 export class AppComponent {
   title = 'Hello, Nata!!!';
-  friends: any[] = [];
+  friends: Friend[] = [];
 
   constructor(private http: HttpClient) {
-    http.get<any[]>('/api/friends')
+    http.get<Friend[]>('/api/friends')
       .subscribe(json => this.friends = json);
   }
 
   addNewFriend() {
-    this.friends.push('A new Friend');
+    // this.friends.push('A new Friend');
   }
 
   deleteFriend(i) {
     this.friends.splice(i, 1);
   }
+}
+
+interface Friend {
+  id: number;
+  name: string;
 }
