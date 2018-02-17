@@ -17,6 +17,8 @@ import "rxjs/add/operator/filter";
       
       <input type="text" [(ngModel)]="newFriendName">
       <button (click)="addNewFriend()">Add!!!</button>
+      
+      <div *ngIf="isSending">Sending...</div>
     </h1>
   `
 })
@@ -24,6 +26,7 @@ export class AppComponent {
   title = 'Hello, Nata!!!';
   friends: Friend[] = [];
   newFriendName: string = '';
+  isSending = false;
 
   constructor(private http: HttpClient) {
     http.get<Friend[]>('/api/friends')
@@ -31,9 +34,11 @@ export class AppComponent {
   }
 
   addNewFriend() {
+    this.isSending = true;
     this.http.post<Friend>('/api/friends', {name: this.newFriendName})
       .subscribe(createdFriend => {
         this.friends.push(createdFriend);
+        this.isSending = false;
       });
 
     this.newFriendName = '';
